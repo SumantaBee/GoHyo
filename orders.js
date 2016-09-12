@@ -725,11 +725,12 @@ router.post('/updateStatus/:id/:code', (req, res) => {
 			}).then(ts=>{
 				model.order.findOne({
 					where:{
-						orderId:ts.orderId
-					}
+						id:ts.orderId
+					},
+					include:[model.user]
 				}).then(order=>{
 					var message="https://control.msg91.com/api/sendhttp.php?";
-					message=message+"authkey=93938AKEktTSB56125977&mobiles="+order.cn_mobile_no+"&message=Your%20consignment%20is%20complete.%20Consignment%20Number%20"+order.order_number+".%0AThanks%20for%20using%20GoHyo!&sender=PGOHYO&route=4&country=91";
+					message=message+"authkey=93938AKEktTSB56125977&mobiles="+order.user.mobile_number+"&message=Your%20consignment%20is%20complete.%20Consignment%20Number%20"+order.order_number+".%0AThanks%20for%20using%20GoHyo!&sender=PGOHYO&route=4&country=91";
 					request(message,function(response){
 					});
 				});
